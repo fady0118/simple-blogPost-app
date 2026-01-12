@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import { v4 as uuidv4, parse as uuidParse } from "uuid";
 import sanitize from "sanitize-html";
 import methodOverride from "method-override";
+import { marked } from 'marked'
 
 const db = new Database("ourApp.db");
 db.pragma("journal_mode = WAL");
@@ -50,6 +51,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(methodOverride("_method"));
 
 app.use(function (req, res, next) {
+  // markdown function
+  res.locals.filterUserHTML = function (content) {
+    return sanitize(marked.parse(content), { allowedTags: ["p", "br", "ul", "ol", "strong", "bold", "i", "em", "h1", "h2", "h3", "h4", "h5", "h6"], allowedAttributes: {} });
+  };
+
   res.locals.errors = [];
   // try to decode incoming cookie
   try {
@@ -280,7 +286,7 @@ app.patch("/updatePost/:id", mustBeLoggedIn, (req, res) => {
   if (errors.length) {
     return res.render("updatePost", { post: oldPost, errors });
   }
-  if (oldPost.title === title || oldPost.body === body) {
+  if (oldPost.title === title && oldPost.body === body) {
     errors.push("no changes made");
     return res.render("updatePost", { post: oldPost, errors });
   }

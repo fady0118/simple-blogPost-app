@@ -73,7 +73,7 @@ app.use(function (req, res, next) {
 // get homepage
 app.get("/", (req, res) => {
   if (req.user) {
-    const postsPrep = db.prepare(`SELECT posts.*, users.username FROM posts INNER JOIN users ON posts.userId = users.id WHERE posts.userId=?`);
+    const postsPrep = db.prepare(`SELECT posts.*, users.username FROM posts INNER JOIN users ON posts.userId = users.id WHERE posts.userId=? ORDER BY posts.createdDate DESC`);
     const posts = postsPrep.all(req.user.id);
     return res.render("dashboard", { posts, username: req.user.username });
   }
@@ -292,8 +292,8 @@ app.patch("/updatePost/:id", mustBeLoggedIn, (req, res) => {
   }
 
   // update post
-  const updatePrep = db.prepare(`UPDATE posts SET title=?,body=?,createdDate=? WHERE id=?`);
-  const updatedPost = updatePrep.run(title || oldPost.title, body || oldPost.body, new Date().toISOString(), req.params.id);
+  const updatePrep = db.prepare(`UPDATE posts SET title=?,body=?, WHERE id=?`);
+  const updatedPost = updatePrep.run(title || oldPost.title, body || oldPost.body, req.params.id);
 
   res.redirect(`/post/${updatedPost.id}`);
 });

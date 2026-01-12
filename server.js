@@ -292,7 +292,7 @@ app.patch("/updatePost/:id", mustBeLoggedIn, (req, res) => {
   }
 
   // update post
-  const updatePrep = db.prepare(`UPDATE posts SET title=?,body=?, WHERE id=?`);
+  const updatePrep = db.prepare(`UPDATE posts SET title=?,body=? WHERE id=?`);
   const updatedPost = updatePrep.run(title || oldPost.title, body || oldPost.body, req.params.id);
 
   res.redirect(`/post/${updatedPost.id}`);

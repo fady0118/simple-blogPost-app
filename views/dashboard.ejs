@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('includes/head') %>
+
+<body>
+    <%- include('includes/header') %>
+    <main>
+        <h2>Welcome to your dashboard
+            <%= username %>
+        </h2>
+        <% posts.map(post => { %>
+        <div>
+            <a href="/post/<%= post.id %>">
+                <%= post.title %>
+            </a> on <i>
+                <%= new Date(post.createdDate).getDate() %>/
+                <%= new Date(post.createdDate).getMonth() + 1 %>
+                /
+                <%= new Date(post.createdDate).getFullYear() %>
+            </i>
+        </div>
+        <% }) %>
+    </main>
+    <%- include('includes/footer') %>
+</body>
+
+</html>

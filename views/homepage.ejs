@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('includes/head') %>
+
+<body>
+    <%- include('includes/header') %>
+    <main>
+
+        <form action="/register" method="post">
+            <% errors.forEach(error => { %>
+            <p class="notice">
+                <%= error %>
+            </p>
+            <% }); %>
+            <fieldset>
+                <legend>Create an account</legend>
+                <label for="username"><small>Username</small></label>
+                <input type="text" name="username" id="username"
+                    autocomplete="off">
+
+                <label for="password"><small>Password</small></label>
+                <input type="password" name="password" id="password"
+                    autocomplete="off">
+                <br />
+                <button type="submit">Sign Up</button>
+            </fieldset>
+        </form>
+    </main>
+
+    <!-- <ul><% const users = ["user1", "user2"];
+users.map(user => { %><li><%= user %></li><% }) %></ul> -->
+    <%- include('includes/footer') %>
+</body>
+
+</html>
